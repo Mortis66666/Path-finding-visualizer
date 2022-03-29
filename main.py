@@ -89,7 +89,7 @@ def find_neighbors(x, y):
     if y < HEIGHT//10 - 1:
         yield x, y+1
 
-def find_path(clock, fps):
+def find_path():
     start = (-1, -1)
 
     for y, row in enumerate(grid):
@@ -104,7 +104,6 @@ def find_path(clock, fps):
     q.put([start])
 
     while not q.empty():
-        clock.tick(fps)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
@@ -155,7 +154,7 @@ def main():
                 else:
                     grid[y][x].type = cell_type.OBSTACLE
             if event.type == pg.KEYDOWN and start and end and pg.key.get_pressed()[pg.K_SPACE]:
-                path = find_path(clock, FPS)
+                path = find_path()
                 
         draw()
         if path:

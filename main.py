@@ -141,10 +141,11 @@ def main():
             if event.type == pg.QUIT:
                 run = False
                 return
-            if event.type == pg.MOUSEBUTTONDOWN and not find:
+            elif event.type == pg.MOUSEBUTTONDOWN and not find:
                 x, y = pg.mouse.get_pos()
                 x //= 10
                 y //= 10
+                global grid
                 if not start:
                     grid[y][x].type = cell_type.START
                     start = True
@@ -153,8 +154,13 @@ def main():
                     end = True
                 else:
                     grid[y][x].type = cell_type.OBSTACLE
-            if event.type == pg.KEYDOWN and start and end and pg.key.get_pressed()[pg.K_SPACE]:
-                path = find_path()
+            elif event.type == pg.KEYDOWN:
+                pressed = pg.key.get_pressed()
+                if start and end and pressed[pg.K_SPACE]:
+                    path = find_path()
+                elif pressed[pg.K_c]:
+                    grid = [[Cell(x, y, cell_type.BLANK) for x in range(40)] for y in range(40)]
+                    start = end = False
                 
         draw()
         if path:
